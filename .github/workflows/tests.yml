@@ -13,6 +13,9 @@ jobs:
       - name: ShellCheck
         run: shellcheck -x -S warning quiz.sh uebung.sh
 
+      - name: Skripte ausführbar machen (nach Upload über die Weboberfläche)
+        run: chmod +x quiz.sh uebung.sh
+
       - name: Fragedateien prüfen
         run: ./quiz.sh --pruefen
 

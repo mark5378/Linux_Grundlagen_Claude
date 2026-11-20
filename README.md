@@ -21,6 +21,7 @@ Antwort (ABCD): B
 ```bash
 git clone https://github.com/DEIN-NAME/linux-grundlagen.git
 cd linux-grundlagen
+chmod +x quiz.sh uebung.sh   # nur nötig, falls "Keine Berechtigung" erscheint
 ./quiz.sh            # Quiz mit Themenauswahl
 ./uebung.sh liste    # praktische Übungen anzeigen
 ```
