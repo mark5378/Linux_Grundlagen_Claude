@@ -19,8 +19,8 @@ Antwort (ABCD): B
 ## 🚀 Schnellstart
 
 ```bash
-git clone https://github.com/DEIN-NAME/linux-grundlagen.git
-cd linux-grundlagen
+git clone https://github.com/mark5378/Linux_Grundlagen_Claude.git
+cd Linux_Grundlagen_Claude
 chmod +x quiz.sh uebung.sh   # nur nötig, falls "Keine Berechtigung" erscheint
 ./quiz.sh            # Quiz mit Themenauswahl
 ./uebung.sh liste    # praktische Übungen anzeigen
