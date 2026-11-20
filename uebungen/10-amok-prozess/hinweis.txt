@@ -1,0 +1,1 @@
+pgrep -af import_test zeigt PID und Befehl. kill PID sendet SIGTERM. Datei leeren: truncate -s 0 logs/import_test.log

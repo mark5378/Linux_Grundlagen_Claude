@@ -62,6 +62,44 @@ Für schnelle Änderungen eignet sich `nano`:
 nano notizen.txt       # Strg+O speichern, Strg+X beenden
 ```
 
+
+## Hardlinks und symbolische Links
+
+```bash
+ln  original.txt zweiter_name.txt     # Hardlink
+ln -s backup/notizen.txt link.txt     # symbolischer Link (Symlink)
+ls -li                                # erste Spalte: Inode-Nummer
+find . -xtype l                       # kaputte Symlinks finden
+```
+
+| | Hardlink | Symlink |
+|---|---|---|
+| Was ist es? | zweiter Name für **dieselbe Inode** | kleine Datei, die einen **Pfad** enthält |
+| Original gelöscht? | Daten bleiben erhalten | Link zeigt ins Leere („kaputt“) |
+| Auf Verzeichnisse / andere Dateisysteme? | nein | ja |
+| Erkennbar an | gleicher Inode-Nummer, Linkzähler > 1 | `l` bei `ls -l`, Pfeil `->` |
+
+🛠️ **Übung:** `./uebung.sh start 07`
+
+## Platzhalter vor dem Löschen prüfen
+
+Die Shell setzt Platzhalter ein, **bevor** der Befehl läuft. Deshalb kannst du mit `ls` oder `echo` gefahrlos prüfen, was ein Muster trifft:
+
+```bash
+ls logs/portal_202609*.log      # Was würde gelöscht?
+rm -i logs/portal_202609*.log   # erst dann löschen, mit Rückfrage
+```
+
+## Dateien untersuchen
+
+```bash
+stat datei          # Größe, Rechte (oktal), Besitzer, Zeitstempel, Inode
+file datei          # Dateityp
+ls -lh datei        # Größe menschenlesbar
+```
+
+In **vi/vim**: `/wort` sucht, `:q!` beendet ohne Speichern, `:wq` speichert und beendet.
+
 ---
 
 ✅ **Teste dich:** `./quiz.sh -t 02` &nbsp;·&nbsp; 🛠️ **Übung:** `./uebung.sh start 02`

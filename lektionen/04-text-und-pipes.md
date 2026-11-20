@@ -90,6 +90,51 @@ cut -d' ' -f4 server.log | sort | uniq -c | sort -rn | head -n 5
 
 Lies so eine Kette von links nach rechts: Spalte ausschneiden → sortieren → zählen → nach Anzahl sortieren → Top 5.
 
+
+## Reguläre Ausdrücke
+
+**Wildcards** (`*`, `?`) wählen **Dateinamen** aus, die Shell löst sie auf. **Reguläre Ausdrücke** beschreiben Muster im **Text**, z. B. für `grep`.
+
+| Regex | Bedeutung |
+|---|---|
+| `.` | ein beliebiges Zeichen |
+| `*` | das Vorherige beliebig oft (auch 0×) |
+| `+` / `?` | mindestens 1× / 0 oder 1× (mit `-E`) |
+| `[0-9]` | eine Ziffer |
+| `{6}` | genau 6× (mit `-E`) |
+| `^` / `$` | Zeilenanfang / Zeilenende |
+| `\b` | Wortgrenze |
+| `A\|B` | A oder B (mit `grep -E`) |
+
+```bash
+grep -E 'ERROR|CRITICAL' portal.log                          # eine von zwei Stufen
+grep -oE '\bWK-[0-9]{6}\b' portal.log | sort | uniq -c       # Sendungsnummern zählen
+grep 'Failed password' auth.log | grep -oE 'from [0-9.]+' | cut -d' ' -f2 | sort | uniq -c | sort -rn
+awk '{print $2}' portal.log | sort | uniq -c | sort -rn      # 2. Spalte zählen
+```
+
+## Reihenfolge von Umleitungen
+
+Umleitungen werden **von links nach rechts** ausgewertet:
+
+```bash
+befehl > datei.txt 2>&1    # stdout in Datei, dann stderr dorthin, wo stdout jetzt hinzeigt → beides in die Datei
+befehl 2>&1 > datei.txt    # stderr auf das alte stdout (Bildschirm), dann stdout in die Datei → Fehler auf dem Bildschirm
+ls da.txt fehlt.txt > gefunden.txt 2> fehler.txt   # getrennt speichern
+```
+
+⚠️ `sort namen.txt > namen.txt` **leert** die Datei. Die Shell kürzt sie, bevor `sort` liest. Besser: `sort -o namen.txt namen.txt`.
+
+## Aliase
+
+```bash
+alias ll='ls -lah'      # für diese Sitzung
+alias ll                # Definition anzeigen
+# dauerhaft: Zeile in ~/.bashrc eintragen, dann: source ~/.bashrc
+```
+
+🛠️ **Übung:** `./uebung.sh start 08` – Portal- und SSH-Logs auswerten
+
 ---
 
 ✅ **Teste dich:** `./quiz.sh -t 04` &nbsp;·&nbsp; 🛠️ **Übung:** `./uebung.sh start 04`

@@ -63,3 +63,90 @@ C: 755
 D: 644
 L: C
 E: 7 = rwx für den Besitzer, 5 = r-x für Gruppe und Andere.
+
+F: Welche Datei enthält die Passwort-Hashes der Benutzer?
+A: /etc/passwd
+B: /etc/shadow
+C: /etc/group
+D: /etc/sudoers
+L: B
+E: /etc/passwd enthält Name, UID, GID, Home und Shell (Passwortfeld nur "x"), /etc/group die Gruppen und Mitglieder. /etc/shadow ist nur für root lesbar.
+
+F: Was ist die Primärgruppe eines Benutzers?
+A: Die Gruppe, der neue Dateien des Benutzers standardmäßig gehören
+B: Die Gruppe mit den meisten Mitgliedern
+C: Immer die Gruppe sudo
+D: Die Gruppe root
+L: A
+E: Zusätzliche Gruppen heißen Sekundär- oder Zusatzgruppen.
+
+F: Wie fügst du den Benutzer lnowak zusätzlich zur Gruppe lager hinzu, ohne seine anderen Gruppen zu verlieren?
+L: sudo usermod -aG lager lnowak
+L: usermod -aG lager lnowak
+L: sudo usermod -a -G lager lnowak
+L: sudo gpasswd -a lnowak lager
+E: Ohne -a ersetzt -G alle bisherigen Zusatzgruppen! Die Änderung wirkt erst nach neuer Anmeldung.
+
+F: Wie entfernst du lnowak aus der Gruppe dispo?
+L: sudo gpasswd -d lnowak dispo
+L: gpasswd -d lnowak dispo
+L: sudo deluser lnowak dispo
+
+F: Wie legst du den Benutzer tbecker mit Home-Verzeichnis, Bash als Shell und den Zusatzgruppen lager und austausch an?
+L: sudo useradd -m -s /bin/bash -G lager,austausch tbecker
+L: useradd -m -s /bin/bash -G lager,austausch tbecker
+L: sudo useradd -m -G lager,austausch -s /bin/bash tbecker
+E: Achtung: Zwischen den Gruppennamen nach dem Komma KEIN Leerzeichen. Passwort danach mit sudo passwd tbecker setzen.
+
+F: Warum sollte man keine gemeinsamen Benutzerkonten verwenden?
+A: Weil Linux das technisch verbietet
+B: Weil sich dann nicht nachvollziehen lässt, wer was getan hat, und Rechte nicht individuell vergeben werden können
+C: Weil gemeinsame Konten mehr Speicher brauchen
+D: Weil sie nur mit sudo funktionieren
+L: B
+
+F: Wie bearbeitest du die sudo-Konfiguration sicher?
+L: sudo visudo
+L: visudo
+E: visudo prüft die Syntax vor dem Speichern. Eine kaputte sudoers-Datei kann dich sonst von sudo aussperren.
+
+F: Was ist der Unterschied zwischen "sudo befehl" und "sudo -i"?
+A: Kein Unterschied
+B: sudo befehl führt einen einzelnen Befehl als root aus, sudo -i öffnet eine vollständige Root-Shell
+C: sudo -i fragt nach dem Root-Passwort
+D: sudo befehl funktioniert nur für root
+L: B
+E: su - benutzer wechselt komplett zu einem anderen Benutzer und verlangt dessen Passwort.
+
+F: Welche Oktalzahl entspricht drwxrws--- (Verzeichnis mit SetGID)?
+L: 2770
+E: Das s an der x-Stelle der Gruppe ist SetGID (2): Neue Dateien erben die Gruppe des Verzeichnisses.
+
+F: Was bewirkt das Sticky Bit bei einem Verzeichnis wie /tmp?
+A: Dateien werden nie gelöscht
+B: Jeder darf nur seine eigenen Dateien löschen oder umbenennen
+C: Nur root darf Dateien anlegen
+D: Neue Dateien erben die Gruppe
+L: B
+E: Gesetzt mit chmod 1777 oder chmod +t. In ls -l erkennbar am t (bzw. T, wenn x fehlt) ganz am Ende.
+
+F: Welche Rechte erhalten neue Dateien bei umask 002?
+A: 644
+B: 664
+C: 775
+D: 600
+L: B
+E: Dateien starten bei 666, Verzeichnisse bei 777. umask 002 nimmt "Andere: schreiben" weg → Dateien 664, Verzeichnisse 775. Bei umask 022: 644 und 755.
+
+F: Warum hängt das Löschen einer Datei nicht von den Rechten der Datei selbst ab?
+A: Weil Löschen immer erlaubt ist
+B: Weil Löschen den Verzeichniseintrag ändert – entscheidend sind Schreib- und Ausführrecht am Verzeichnis (und ggf. das Sticky Bit)
+C: Weil nur root löschen darf
+D: Weil Dateien keine Rechte haben
+L: B
+
+F: Wie löschst du den Benutzer lnowak samt Home-Verzeichnis?
+L: sudo userdel -r lnowak
+L: userdel -r lnowak
+L: sudo deluser --remove-home lnowak
+E: Dateien außerhalb des Home-Verzeichnisses bleiben "verwaist" zurück – sie lassen sich mit find / -nouser finden.

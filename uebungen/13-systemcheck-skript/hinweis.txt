@@ -1,0 +1,1 @@
+Gerüst: status=0; pruefe_platz() { local ort=$1 p=$2; if (( p >= 90 )); then echo "KRITISCH: ..."; status=2; elif ... } – am Ende exit "$status". Achte darauf, eine 2 nicht mit einer 1 zu überschreiben.

@@ -1,0 +1,167 @@
+# Netzwerkgrundlagen & Fehlersuche
+
+F: Auf welcher OSI-Schicht arbeitet ein Ethernet-Switch?
+A: Schicht 1
+B: Schicht 2
+C: Schicht 3
+D: Schicht 7
+L: B
+E: Switch = Schicht 2 (MAC-Adressen), Router und IP = Schicht 3, TCP/UDP = Schicht 4, DNS = Schicht 7.
+
+F: Auf welcher OSI-Schicht arbeiten TCP und UDP?
+A: 2
+B: 3
+C: 4
+D: 7
+L: C
+
+F: Warum nutzt SSH TCP und nicht UDP?
+A: UDP ist verschlüsselt
+B: TCP ist verbindungsorientiert und garantiert vollständige, geordnete Übertragung
+C: TCP ist schneller
+D: UDP funktioniert nur im Internet
+L: B
+E: UDP ist verbindungslos und ohne Garantien – gut für DNS-Anfragen oder Streaming.
+
+F: In welcher Reihenfolge läuft der TCP-Verbindungsaufbau (3-Wege-Handshake)?
+A: ACK – SYN – SYN-ACK
+B: SYN – SYN-ACK – ACK
+C: SYN – ACK – FIN
+D: HELLO – OK – START
+L: B
+
+F: ip link zeigt "state UP, LOWER_UP". Was bedeutet LOWER_UP?
+A: Die IP-Adresse ist gesetzt
+B: Die physische (bzw. virtuelle) Verbindung zum Netz steht
+C: Der DNS-Server ist erreichbar
+D: Die Schnittstelle ist deaktiviert
+L: B
+E: UP = Schnittstelle im System aktiviert, LOWER_UP = Link vorhanden ("Kabel steckt").
+
+F: Eine Schnittstelle hat nur die Adresse fe80::215:5dff:fe0a:2815/64. Was ist das?
+A: Eine öffentliche IPv6-Adresse
+B: Eine automatisch erzeugte IPv6-Link-Local-Adresse, nur im lokalen Segment gültig
+C: Eine IPv4-Adresse
+D: Die MAC-Adresse
+L: B
+
+F: Wie lautet die Subnetzmaske zu /26?
+L: 255.255.255.192
+E: 26 Netzbits: 24 Bit = 255.255.255, dazu 2 Bit im letzten Oktett = 128 + 64 = 192.
+
+F: Wie viele nutzbare Hostadressen hat ein /26-Netz?
+L: 62
+E: 32 − 26 = 6 Hostbits → 2^6 = 64 Adressen, minus Netz- und Broadcast-Adresse = 62.
+
+F: Wie lautet die Broadcast-Adresse von 10.40.10.70/26?
+L: 10.40.10.127
+E: Blockgröße 64 → Blöcke 0, 64, 128, 192. Die 70 liegt im Block 64–127.
+
+F: Wie lautet die Netzadresse von 192.168.5.200/27?
+L: 192.168.5.192
+E: /27 → Blockgröße 32 → Blöcke 0, 32, …, 160, 192, 224. Die 200 liegt im Block 192–223.
+
+F: Liegen 10.40.10.60/26 und 10.40.10.70/26 im selben Subnetz?
+A: Ja
+B: Nein
+L: B
+E: .60 gehört zum Block 0–63, .70 zum Block 64–127.
+
+F: Wie viele nutzbare Hosts hat ein /24-Netz?
+L: 254
+
+F: Warum bekommen Server meist feste IP-Adressen?
+A: Weil DHCP für Server verboten ist
+B: Weil andere Geräte und Dienste sie dauerhaft unter derselben Adresse erreichen müssen
+C: Weil feste Adressen schneller sind
+D: Weil Server keine MAC-Adresse haben
+L: B
+E: Arbeitsplatzrechner bekommen ihre Adressen meist per DHCP – das spart Verwaltungsaufwand.
+
+F: Was macht das Standard-Gateway?
+A: Es übersetzt Namen in IP-Adressen
+B: Es leitet Pakete in andere Netze weiter
+C: Es vergibt IP-Adressen
+D: Es verschlüsselt den Datenverkehr
+L: B
+E: DNS übersetzt Namen in Adressen, DHCP vergibt Adressen, NAT übersetzt private in öffentliche Adressen.
+
+F: Wie setzt du der Schnittstelle eth0 testweise (bis zum Neustart) die Adresse 10.40.10.21/24?
+L: sudo ip addr add 10.40.10.21/24 dev eth0
+L: sudo ip address add 10.40.10.21/24 dev eth0
+L: sudo ip a add 10.40.10.21/24 dev eth0
+E: Entfernen mit ip addr del …, Standardroute mit ip route add default via GATEWAY.
+
+F: Wie zeigst du die Routingtabelle samt Standard-Gateway an?
+L: ip route
+L: ip r
+L: ip route show
+L: ip -4 route
+
+F: Welcher Netplan-Befehl übernimmt eine neue Konfiguration nur vorläufig und rollt sie automatisch zurück, wenn du sie nicht bestätigst?
+A: netplan generate
+B: netplan apply
+C: netplan try
+D: netplan get
+L: C
+E: generate erzeugt nur die Backend-Konfiguration, apply übernimmt sofort ohne Sicherheitsnetz.
+
+F: Warum muss eine Netplan-YAML-Datei korrekt eingerückt sein?
+A: Aus optischen Gründen
+B: Die Einrückung (nur Leerzeichen, keine Tabs) bestimmt die Struktur – falsche Einrückung macht die Datei ungültig
+C: Netplan ignoriert Einrückungen
+D: Weil YAML sonst zu groß wird
+L: B
+
+F: getent hosts server01 liefert nichts, getent hosts server01.firma.example funktioniert. Was fehlt wahrscheinlich?
+A: Ein Standard-Gateway
+B: Die DNS-Suchdomäne
+C: Die IPv6-Adresse
+D: Der SSH-Dienst
+L: B
+E: Unter Netplan: nameservers: search: [firma.example]. Kontrolle mit resolvectl status.
+
+F: Was ist der Unterschied zwischen getent hosts und dig?
+A: Es gibt keinen
+B: getent nutzt die Namensauflösung des Systems (inkl. /etc/hosts laut nsswitch.conf), dig fragt direkt einen DNS-Server
+C: dig liest nur /etc/hosts
+D: getent funktioniert nur mit IPv6
+L: B
+
+F: Ein Verbindungsversuch auf Port 80 meldet sofort "Connection refused". Was bedeutet das?
+A: Der Host ist komplett offline
+B: Der Host ist erreichbar, aber auf dem Port lauscht kein Dienst (oder eine Firewall lehnt aktiv ab)
+C: Das Kabel ist abgezogen
+D: Der DNS-Name ist falsch
+L: B
+E: Ein Timeout dagegen heißt: keine Antwort – Host aus, Routingproblem oder eine Firewall verwirft (DROP).
+
+F: ss -tlnp zeigt für nginx "LISTEN 127.0.0.1:8080". Warum ist der Dienst von anderen Rechnern auf Port 80 nicht erreichbar?
+A: Weil nginx nicht läuft
+B: Weil er nur auf localhost und auf Port 8080 lauscht
+C: Weil IPv6 fehlt
+D: Weil das Gateway falsch ist
+L: B
+E: In der nginx-Konfiguration listen 80; setzen, mit nginx -t prüfen und den Dienst neu starten.
+
+F: Was bedeutet "Bottom-up-Fehlersuche" im Netzwerk?
+A: Man beginnt bei der Anwendung und arbeitet sich nach unten vor
+B: Man prüft von unten nach oben: Link, IP-Adresse, Route, Erreichbarkeit, Namensauflösung, Dienst
+C: Man startet den Rechner neu
+D: Man prüft nur die Firewall
+L: B
+
+F: Warum heißt ein fehlgeschlagener ping nicht unbedingt, dass ein Rechner unerreichbar ist?
+A: ping funktioniert nur unter Windows
+B: ICMP wird oft durch Firewalls blockiert, andere Dienste können trotzdem erreichbar sein
+C: ping prüft nur DNS
+D: ping benötigt Root-Rechte
+L: B
+
+F: ip neigh zeigt für das eingetragene Gateway den Status FAILED, lokale Rechner sind aber erreichbar. Was ist wahrscheinlich?
+A: Der DNS-Server ist ausgefallen
+B: Das eingetragene Gateway ist falsch oder nicht erreichbar
+C: Die Netzwerkkarte ist defekt
+D: Die Subnetzmaske ist zu groß
+L: B
+E: Im eigenen Subnetz wird direkt zugestellt, nur Pakete in fremde Netze laufen über das Gateway.

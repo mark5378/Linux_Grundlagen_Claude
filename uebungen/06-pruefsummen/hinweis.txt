@@ -1,0 +1,1 @@
+cd downloads && sha256sum -c SHA256SUMS zeigt OK oder FAILED. Für Schritt 4: sha256sum meine_daten.tar > meine_daten.sha256

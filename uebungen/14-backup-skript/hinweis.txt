@@ -1,0 +1,1 @@
+Gerüst: tage=${1:-14}; [[ $tage =~ ^[1-9][0-9]*$ ]] || { echo "Ungültig" >&2; exit 1; }; exec 9>backup.lock; flock -n 9 || { echo "Läuft schon" >&2; exit 1; } – danach tar, tar -tzf, find -mtime +$tage -delete.

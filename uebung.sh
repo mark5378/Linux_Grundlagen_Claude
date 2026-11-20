@@ -54,6 +54,10 @@ liste() {
 }
 
 einrichten() {
+  # Von einer früheren Runde noch laufende Übungsprozesse beenden
+  if [[ -f $SANDBOX/.uebung/pid ]]; then
+    kill "$(cat "$SANDBOX/.uebung/pid")" 2>/dev/null || true
+  fi
   rm -rf "$SANDBOX"
   mkdir -p "$SANDBOX/.uebung"
   (cd "$SANDBOX" && bash "$UEBUNG_QUELLE/setup.sh") || {
@@ -99,6 +103,7 @@ selbsttest() {
     else
       echo "${ROT}$UEBUNG_NAME: Musterlösung besteht die Prüfung nicht!${RESET}"; fehler=1
     fi
+    [[ -f $SANDBOX/.uebung/pid ]] && kill "$(cat "$SANDBOX/.uebung/pid")" 2>/dev/null
   done
   rm -rf "$UEBUNGS_HOME"
   return $fehler

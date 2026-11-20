@@ -68,3 +68,68 @@ L: echo Hallo Welt
 L: echo "Hallo Welt"
 L: echo 'Hallo Welt'
 E: echo schreibt seine Argumente auf die Standardausgabe.
+
+F: Wie findest du mit einem regulären Ausdruck alle Zeilen, die ERROR oder CRITICAL enthalten?
+L: grep -E "ERROR|CRITICAL" portal.log
+L: grep -E 'ERROR|CRITICAL' portal.log
+L: grep -E "CRITICAL|ERROR" portal.log
+L: grep -E 'CRITICAL|ERROR' portal.log
+L: egrep "ERROR|CRITICAL" portal.log
+E: -E aktiviert erweiterte reguläre Ausdrücke, | bedeutet "oder".
+
+F: Welcher reguläre Ausdruck passt auf "WK-" gefolgt von genau sechs Ziffern?
+A: WK-*
+B: WK-[0-9]{6}
+C: WK-??????
+D: WK-[6]
+L: B
+E: Mit grep -oE 'WK-[0-9]{6}' werden nur die Treffer ausgegeben. * und ? sind hier Shell-Wildcards, keine Regex.
+
+F: Was ist der Unterschied zwischen Shell-Wildcards und regulären Ausdrücken?
+A: Kein Unterschied
+B: Wildcards wählen Dateinamen aus (die Shell löst sie auf), reguläre Ausdrücke beschreiben Textmuster in Inhalten (z. B. für grep)
+C: Reguläre Ausdrücke funktionieren nur in Python
+D: Wildcards gibt es nur unter Windows
+L: B
+
+F: Was passiert bei "sort namen.txt > namen.txt"?
+A: Die Datei wird korrekt sortiert
+B: Die Datei ist danach leer, weil die Umleitung sie leert, bevor sort sie liest
+C: sort meldet einen Fehler und nichts passiert
+D: Die Datei wird doppelt so lang
+L: B
+E: Lösung: sort -o namen.txt namen.txt oder in eine neue Datei schreiben und danach umbenennen.
+
+F: Wo landen bei "befehl 2>&1 > datei.txt" die Fehlermeldungen?
+A: In datei.txt
+B: Auf dem Bildschirm
+C: In /dev/null
+D: Nirgends
+L: B
+E: Umleitungen werden von links nach rechts ausgewertet. 2>&1 kopiert stderr auf das damalige stdout (Bildschirm). Richtig für beides in die Datei: befehl > datei.txt 2>&1.
+
+F: Welchen Dateideskriptor hat stderr?
+L: 2
+
+F: Wie leitest du nur die Fehlermeldungen von ls in die Datei fehler.txt um?
+L: ls 2> fehler.txt
+L: ls 2>fehler.txt
+
+F: Wie zeigst du die letzten 5 Zeilen an, die ERROR enthalten?
+L: grep ERROR portal.log | tail -n 5
+L: grep ERROR portal.log | tail -5
+L: grep "ERROR" portal.log | tail -n 5
+L: grep 'ERROR' portal.log | tail -n 5
+L: grep "ERROR" portal.log | tail -5
+
+F: Wie legst du einen Alias ll für "ls -lah" an (für die aktuelle Sitzung)?
+L: alias ll='ls -lah'
+L: alias ll="ls -lah"
+E: Dauerhaft wird er, wenn du die Zeile in ~/.bashrc einträgst. Die Definition zeigt alias ll oder type ll.
+
+F: Warum ist less für große Logdateien besser geeignet als cat?
+A: less verändert die Datei nicht
+B: less zeigt seitenweise an, erlaubt Vor- und Zurückblättern und Suchen, ohne alles auf einmal auszugeben
+C: cat kann keine Logdateien lesen
+D: less komprimiert die Datei
+L: B

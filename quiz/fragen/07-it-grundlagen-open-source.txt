@@ -1,0 +1,158 @@
+# IT-Grundlagen, Linux-Aufbau & Open Source
+
+F: Welche Schicht hat im GNU/Linux-Schichtenmodell direkten Zugriff auf die Hardware?
+A: Die Anwendungen
+B: Die GNU-Werkzeuge
+C: Der Linux-Kernel
+D: Die Shell
+L: C
+E: Reihenfolge von unten: Hardware → Kernel → GNU-Werkzeuge (Shell, Coreutils, Bibliotheken) → Anwendungen.
+
+F: Warum spricht man oft von "GNU/Linux" statt nur von "Linux"?
+A: Weil GNU die Firma hinter Linux ist
+B: Weil der Kernel allein keine Shell, keine Grundbefehle und keine Compiler mitbringt – die stammen vom GNU-Projekt
+C: Weil GNU eine ältere Kernel-Version ist
+D: Weil Linux nur unter der GPL läuft
+L: B
+E: Erst Kernel plus GNU-Werkzeuge ergeben ein bedienbares Betriebssystem.
+
+F: Ein Programm will eine Datei lesen. Wie geschieht das?
+A: Es liest direkt die Sektoren der Festplatte
+B: Es bittet den Kernel per Systemaufruf (z. B. openat, read) darum
+C: Es fragt die Shell
+D: Es kopiert die Datei vorher nach /tmp
+L: B
+E: Programme laufen im User-Space und dürfen nicht direkt auf Hardware zugreifen. Mit strace kann man Systemaufrufe beobachten.
+
+F: Was ist ein Vorteil der Trennung von Kernel-Space und User-Space?
+A: Programme laufen dadurch schneller
+B: Stürzt ein Programm ab, bleibt der Kernel und damit das restliche System stabil
+C: Man braucht keine Benutzerrechte mehr
+D: Man kann mehrere Kernel gleichzeitig starten
+L: B
+E: Außerdem prüft der Kernel bei jedem Zugriff die Berechtigungen – das erhöht die Sicherheit.
+
+F: Was bedeutet "monolithischer, aber modularer Kernel"?
+A: Alle Treiber laufen im User-Space
+B: Der Kernel läuft komplett im Kernel-Space, Treiber können aber zur Laufzeit als Module geladen und entladen werden
+C: Der Kernel besteht aus genau einem Modul
+D: Der Kernel kann nicht erweitert werden
+L: B
+E: Bei einem Mikrokernel laufen dagegen Treiber und Dienste im User-Space. Geladene Module zeigt lsmod.
+
+F: Welchen Zweck hat der POSIX-Standard?
+A: Er regelt die Lizenzierung von Linux
+B: Er legt einheitliche Schnittstellen für Unix-artige Systeme fest, damit Programme portabel sind
+C: Er definiert das Dateisystem ext4
+D: Er ist ein Paketformat
+L: B
+
+F: In welchem Jahr veröffentlichte Linus Torvalds die erste Linux-Version?
+A: 1969
+B: 1983
+C: 1991
+D: 2001
+L: C
+E: 1969 Unix, 1983 Ankündigung des GNU-Projekts, 1987 Minix, 1991 Linux, 1992 Wechsel zur GPL, 1993 Debian und Slackware.
+
+F: Welche Aussage über Freeware ist richtig?
+A: Freeware ist immer Open Source
+B: Freeware ist kostenlos, der Quellcode ist aber meist nicht zugänglich und Änderungen sind nicht erlaubt
+C: Freeware darf man beliebig verändern
+D: Freeware steht immer unter der GPL
+L: B
+E: "Kostenlos" ist nicht gleich "frei". Bei Freier Software geht es um Freiheiten, nicht um den Preis.
+
+F: Eine Software hat offenen Quellcode, verlangt aber ab 150 Mitarbeitenden eine Zusatzlizenz. Ist sie Open Source?
+A: Ja, weil der Quellcode offen ist
+B: Nein, eine Open-Source-Lizenz darf keine Personen, Gruppen oder Einsatzzwecke benachteiligen
+C: Ja, solange die Firma unter 150 Mitarbeitende hat
+D: Nur wenn sie unter der MIT-Lizenz steht
+L: B
+E: Die Open-Source-Definition verbietet Diskriminierung nach Personen, Gruppen oder Einsatzgebieten.
+
+F: Was garantiert die Freiheit 0 der vier Freiheiten Freier Software?
+A: Den Quellcode zu studieren
+B: Das Programm für jeden Zweck auszuführen
+C: Kopien weiterzugeben
+D: Verbesserte Versionen zu veröffentlichen
+L: B
+E: 0 = ausführen, 1 = studieren und anpassen, 2 = weitergeben, 3 = verbessern und Verbesserungen veröffentlichen.
+
+F: Welche Lizenz hat KEIN Copyleft?
+A: GPL
+B: AGPL
+C: LGPL
+D: MIT
+L: D
+E: MIT verlangt nur, dass Urheberrechtshinweis und Lizenztext erhalten bleiben. GPL = starkes, LGPL und MPL = schwaches Copyleft.
+
+F: Eine Firma verändert ein GPL-Programm und nutzt es nur auf ihren eigenen Servern. Muss sie den Code veröffentlichen?
+A: Ja, sofort
+B: Nein, das Copyleft der GPL greift erst bei der Weitergabe
+C: Nur wenn das Programm älter als 5 Jahre ist
+D: Ja, aber nur an die Free Software Foundation
+L: B
+E: Genau diese "Server-Lücke" schließt die AGPL: Dort reicht schon die Bereitstellung über ein Netzwerk.
+
+F: Ein Hersteller liefert Geräte mit einem veränderten Linux-Kernel aus. Was muss er tun?
+A: Nichts, der Kernel ist MIT-lizenziert
+B: Den Quellcode seiner Kernel-Änderungen den Käufern zugänglich machen (GPLv2)
+C: Eine Gebühr an Linus Torvalds zahlen
+D: Den Kernel unter eine eigene Lizenz stellen
+L: B
+
+F: Welches Paketformat und welchen Paketmanager nutzen Debian und Ubuntu?
+A: .rpm und dnf
+B: .deb und apt
+C: .pkg.tar.zst und pacman
+D: .rpm und zypper
+L: B
+E: Red Hat/Fedora: .rpm mit dnf. SUSE: .rpm mit zypper. Arch: pacman.
+
+F: Was ist der wichtigste Unterschied zwischen Fixed Release und Rolling Release?
+A: Fixed Release ist immer kostenpflichtig
+B: Bei Fixed Release werden Versionen eingefroren und nur mit Sicherheits- und Fehlerkorrekturen versorgt, bei Rolling Release wird laufend auf neue Versionen aktualisiert
+C: Rolling Release hat keinen Kernel
+D: Es gibt keinen Unterschied
+L: B
+E: Für produktive Server sind Fixed Releases (z. B. Ubuntu LTS, RHEL) üblich, weil sie vorhersehbar und stabil sind.
+
+F: Eine Fachsoftware ist vom Hersteller nur für Red Hat Enterprise Linux freigegeben. Welche Distribution wählst du?
+A: Arch Linux
+B: Linux Mint
+C: RHEL
+D: Kali Linux
+L: C
+E: Herstellerfreigaben und Support sind im Unternehmen oft das wichtigste Auswahlkriterium.
+
+F: Welche Distribution ist speziell für Penetrationstests gedacht?
+A: Kali Linux
+B: Debian
+C: openSUSE Leap
+D: Ubuntu Server
+L: A
+E: Kali bringt viele Sicherheitswerkzeuge mit. Nur für ausdrücklich genehmigte Tests verwenden!
+
+F: Wie lange gibt es für eine Ubuntu-LTS-Version standardmäßig Sicherheitsupdates?
+A: 9 Monate
+B: 2 Jahre
+C: 5 Jahre
+D: 20 Jahre
+L: C
+E: Mit Ubuntu Pro (ESM) lässt sich der Zeitraum verlängern. Alternativ rechtzeitig auf die nächste LTS aktualisieren.
+
+F: Warum bedeutet Open Source nicht automatisch "kostenloser Betrieb"?
+A: Weil man für jede Installation Lizenzgebühren zahlt
+B: Weil Personal, Hardware, Wartung und ggf. Supportverträge trotzdem Geld kosten
+C: Weil Open Source nur auf teurer Hardware läuft
+D: Das stimmt nicht, der Betrieb ist immer kostenlos
+L: B
+
+F: Welcher Grundsatz gehört zur Unix-Philosophie?
+A: Ein Programm soll möglichst viele Aufgaben auf einmal erledigen
+B: Jedes Programm erledigt eine Aufgabe gut, und Programme lassen sich über Textströme kombinieren
+C: Programme sollen nur grafische Oberflächen haben
+D: Daten werden immer binär ausgetauscht
+L: B
+E: Deshalb funktionieren Pipelines wie: cut … | sort | uniq -c | sort -rn | head

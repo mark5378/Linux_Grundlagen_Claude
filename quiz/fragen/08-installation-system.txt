@@ -1,0 +1,154 @@
+# Installation, Virtualisierung & Systemaufbau
+
+F: Was ist ein Hypervisor?
+A: Ein besonders schneller Prozessor
+B: Software, die virtuelle Maschinen erzeugt, verwaltet und die Hardware des Hosts auf sie verteilt
+C: Das Betriebssystem in der virtuellen Maschine
+D: Eine Abbilddatei einer DVD
+L: B
+E: Host = physischer Rechner, Gast = Betriebssystem in der VM, ISO = Abbild eines Installationsmediums.
+
+F: Mit welchem Befehl prüfst du heruntergeladene Dateien gegen eine Datei SHA256SUMS?
+L: sha256sum -c SHA256SUMS
+L: sha256sum --check SHA256SUMS
+E: Mit --ignore-missing werden Einträge für nicht heruntergeladene Dateien übersprungen.
+
+F: Die GPG-Signatur ist gültig ("Good signature"), aber sha256sum meldet für die ISO "FAILED". Was tust du?
+A: Trotzdem installieren, die Signatur ist ja gültig
+B: Die ISO löschen, neu herunterladen und erneut prüfen
+C: Die Prüfsumme in SHA256SUMS anpassen
+D: GPG neu installieren
+L: B
+E: Die Signatur bestätigt nur die Echtheit der Prüfsummendatei. FAILED heißt: Die ISO selbst ist beschädigt oder manipuliert.
+
+F: Was ist der Unterschied zwischen Integrität und Echtheit einer Datei?
+A: Es gibt keinen
+B: Integrität = Datei ist unverändert und vollständig (Prüfsumme); Echtheit = Datei stammt wirklich vom Herausgeber (Signatur)
+C: Integrität wird mit GPG geprüft, Echtheit mit sha256sum
+D: Echtheit bedeutet, dass die Datei kostenlos ist
+L: B
+
+F: Hyper-V meldet beim Booten von Linux "The signed image's hash is not allowed (DB)". Was ist die wahrscheinlichste Ursache?
+A: Die ISO ist zu groß
+B: Die Secure-Boot-Vorlage steht auf "Microsoft Windows" statt "Microsoft UEFI Certificate Authority"
+C: Die VM hat zu wenig RAM
+D: Das Netzwerk ist nicht verbunden
+L: B
+
+F: Nach der Installation startet beim Neustart wieder der Installer. Woran liegt das meist?
+A: Der Kernel ist defekt
+B: Das ISO-Image ist noch eingelegt und wird vor der Festplatte gebootet
+C: Das Passwort ist falsch
+D: Die Festplatte ist voll
+L: B
+
+F: Was macht der Bootloader GRUB?
+A: Er formatiert die Festplatte
+B: Er lädt den Kernel und die initiale RAM-Disk in den Speicher und übergibt an den Kernel
+C: Er startet alle Dienste
+D: Er verwaltet Pakete
+L: B
+E: Danach startet der Kernel das Init-System (meist systemd) als Prozess mit der PID 1.
+
+F: Was ist der größte Vorteil von LVM?
+A: Es verschlüsselt automatisch
+B: Speicherplatz lässt sich flexibel vergrößern oder neu aufteilen, ohne Partitionen mühsam umzubauen
+C: Es macht Backups überflüssig
+D: Es ist schneller als jede SSD
+L: B
+E: Begriffe: Physical Volume → Volume Group → Logical Volume.
+
+F: Ersetzt ein VM-Prüfpunkt (Snapshot) eine Datensicherung?
+A: Ja, vollständig
+B: Nein, er liegt auf demselben Host-Speicher und geht bei dessen Ausfall mit verloren
+C: Ja, wenn man ihn täglich erstellt
+D: Nur bei Linux-VMs
+L: B
+
+F: Was bedeutet das Zeichen # am Ende des Prompts, z. B. root@server:~#?
+A: Man ist als normaler Benutzer angemeldet
+B: Man arbeitet als root mit vollen Rechten
+C: Der letzte Befehl war fehlerhaft
+D: Man ist im Home-Verzeichnis
+L: B
+E: $ = normaler Benutzer, # = root.
+
+F: Mit welchem Befehl findest du heraus, ob ls ein Alias, ein Shell-internes Kommando oder ein Programm ist?
+L: type ls
+E: apropos stichwort durchsucht die Kurzbeschreibungen der Manpages nach passenden Befehlen.
+
+F: Wie zeigst du an, für welche installierten Pakete Updates verfügbar sind?
+L: apt list --upgradable
+L: sudo apt list --upgradable
+E: Vorher mit sudo apt update die Paketlisten aktualisieren.
+
+F: Was ist der Unterschied zwischen apt upgrade und apt full-upgrade?
+A: Es gibt keinen
+B: full-upgrade darf bei Bedarf auch Pakete entfernen oder neue Abhängigkeiten installieren
+C: upgrade aktualisiert nur den Kernel
+D: full-upgrade installiert eine neue Distribution
+L: B
+
+F: Was macht apt purge im Gegensatz zu apt remove?
+A: Es entfernt zusätzlich die Konfigurationsdateien
+B: Es entfernt nur die Konfiguration, nicht das Programm
+C: Es leert den Paket-Cache
+D: Es entfernt alle nicht mehr benötigten Pakete
+L: A
+E: Nicht mehr benötigte Abhängigkeiten entfernt apt autoremove.
+
+F: Wie findest du heraus, zu welchem Paket die Datei /usr/bin/ls gehört?
+L: dpkg -S /usr/bin/ls
+E: Ergebnis: coreutils. dpkg ist das Low-Level-Werkzeug, apt baut darauf auf und löst Abhängigkeiten.
+
+F: Beim Update erscheint "Could not get lock /var/lib/dpkg/lock-frontend". Was ist die beste erste Reaktion?
+A: Sofort die Lock-Datei löschen
+B: Warten und prüfen, ob noch ein anderer apt/dpkg-Prozess läuft (z. B. automatische Updates)
+C: Den Rechner hart ausschalten
+D: apt deinstallieren
+L: B
+E: Lock-Dateien nie vorschnell löschen – ein laufender Vorgang könnte die Paketdatenbank beschädigen. Nach einem Abbruch hilft oft sudo dpkg --configure -a.
+
+F: Was unterscheidet Snap und Flatpak grundsätzlich von apt?
+A: Sie funktionieren nur auf Arch
+B: Sie sind distributionsunabhängig und bringen ihre Bibliotheken isoliert mit
+C: Sie installieren nur Kernel
+D: Sie sind Low-Level-Werkzeuge wie dpkg
+L: B
+
+F: Was liegt im Verzeichnis /dev?
+A: Entwicklerwerkzeuge
+B: Gerätedateien, z. B. für Festplatten und Terminals
+C: Benutzerdaten
+D: Logdateien
+L: B
+
+F: ls -l /bin zeigt "lrwxrwxrwx ... /bin -> usr/bin". Was ist /bin?
+A: Ein normales Verzeichnis
+B: Ein symbolischer Link auf /usr/bin
+C: Eine Gerätedatei
+D: Ein Hardlink
+L: B
+E: Das erste Zeichen von ls -l: - Datei, d Verzeichnis, l Link, b/c Block-/Zeichengerät.
+
+F: Mit welchem Befehl findest du heraus, welches Dateisystem auf / eingehängt ist?
+L: findmnt /
+L: df -hT /
+L: df -T /
+E: Was beim Start automatisch eingehängt wird, steht in /etc/fstab.
+
+F: Was bewirkt Journaling bei einem Dateisystem wie ext4?
+A: Es komprimiert Dateien
+B: Änderungen werden vorab protokolliert, damit das Dateisystem nach einem Absturz schnell wieder konsistent ist
+C: Es erstellt automatisch Backups
+D: Es verschlüsselt das Dateisystem
+L: B
+E: Inodes speichern die Metadaten einer Datei (Rechte, Besitzer, Größe, Speicherorte) – nicht den Namen.
+
+F: Welches Dateisystem bietet Copy-on-Write und eingebaute Snapshots?
+A: ext4
+B: XFS
+C: Btrfs
+D: FAT32
+L: C
+E: ext4: bewährter Allrounder. XFS: stark bei sehr großen Dateien und Datenmengen.

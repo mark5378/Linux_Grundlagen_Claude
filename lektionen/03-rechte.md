@@ -80,6 +80,67 @@ chmod +x hallo.sh
 ./hallo.sh
 ```
 
+
+## Benutzer und Gruppen verwalten
+
+| Datei | Inhalt |
+|---|---|
+| `/etc/passwd` | Name, UID, GID der Primärgruppe, Home, Shell |
+| `/etc/shadow` | Passwort-Hashes, Ablaufdaten (nur root lesbar) |
+| `/etc/group` | Gruppen, GID, Mitglieder |
+
+Die **Primärgruppe** bekommen neue Dateien standardmäßig. **Sekundärgruppen** geben zusätzliche Rechte.
+
+```bash
+sudo groupadd lager
+sudo useradd -m -s /bin/bash -G lager,austausch tbecker   # kein Leerzeichen nach dem Komma!
+sudo passwd tbecker
+sudo usermod -aG lager lnowak      # Gruppe HINZUFÜGEN (-a!), ohne -a werden alle anderen entfernt
+sudo gpasswd -d lnowak dispo       # aus Gruppe entfernen
+groups lnowak                      # Kontrolle (wirkt erst nach neuer Anmeldung)
+getent passwd tbecker; getent group lager
+sudo userdel -r lnowak             # Benutzer samt Home löschen
+```
+
+**Persönliche Konten statt Sammelkonten:** Nur so ist nachvollziehbar, wer was getan hat, und Rechte lassen sich pro Person vergeben und entziehen.
+
+**sudo:** `sudo befehl` führt einen Befehl als root aus, `sudo -i` öffnet eine Root-Shell, `su - benutzer` wechselt komplett den Benutzer. Wer `sudo` darf, regelt die Gruppe `sudo` bzw. `/etc/sudoers`. Diese Datei **nur mit `sudo visudo`** bearbeiten, das prüft die Syntax.
+
+## Spezialrechte
+
+| Bit | Oktal | bei Dateien | bei Verzeichnissen | in `ls -l` |
+|---|---|---|---|---|
+| SetUID | 4000 | läuft mit den Rechten des Besitzers (z. B. `passwd`) | – | `s` bei Besitzer |
+| SetGID | 2000 | läuft mit den Rechten der Gruppe | neue Dateien **erben die Gruppe** des Verzeichnisses | `s` bei Gruppe |
+| Sticky | 1000 | – | jeder darf nur **eigene** Dateien löschen (z. B. `/tmp`) | `t` am Ende |
+
+Ein **großes** `S` oder `T` bedeutet: Das Spezialbit ist gesetzt, das `x` darunter aber nicht.
+
+**Beispiel einer Abteilungsablage:**
+
+```bash
+sudo mkdir -p /srv/daten/{lager,dispo,austausch}
+sudo chown root:lager /srv/daten/lager
+sudo chmod 2770 /srv/daten/lager        # drwxrws--- : nur Gruppe, Gruppe wird vererbt
+sudo chown root:austausch /srv/daten/austausch
+sudo chmod 1770 /srv/daten/austausch    # drwxrwx--T : jeder nur eigene Dateien löschen
+stat -c '%a %A %U:%G %n' /srv/daten/*
+```
+
+Ob du eine Datei **löschen** darfst, hängt nicht von den Rechten der Datei ab, sondern von den Rechten am **Verzeichnis** (`w` + `x`) und dem Sticky Bit.
+
+## umask
+
+Die **umask** legt fest, welche Rechte neuen Dateien **weggenommen** werden. Dateien starten bei `666`, Verzeichnisse bei `777`.
+
+| umask | neue Dateien | neue Verzeichnisse | typisch für |
+|---|---|---|---|
+| `022` | 644 `rw-r--r--` | 755 `rwxr-xr-x` | Standard |
+| `002` | 664 `rw-rw-r--` | 775 `rwxrwxr-x` | Teamordner: Gruppe darf mitschreiben |
+| `077` | 600 | 700 | private Daten |
+
+🛠️ **Übung:** `./uebung.sh start 09`
+
 ---
 
 ✅ **Teste dich:** `./quiz.sh -t 03` &nbsp;·&nbsp; 🛠️ **Übung:** `./uebung.sh start 03`

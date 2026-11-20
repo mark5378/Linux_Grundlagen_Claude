@@ -1,0 +1,1 @@
+Stufen: awk "{print \$2}" logs/portal.log | sort | uniq -c | sort -rn – Sendungen: grep -oE "WK-[0-9]{6}\b" logs/portal.log | sort | uniq -c

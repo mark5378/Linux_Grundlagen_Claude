@@ -1,0 +1,204 @@
+# Sicherheit, Firewall & SSH
+
+F: Was ist PAM?
+A: Ein Paketmanager
+B: Ein Framework, über das Programme Anmeldung, Kontoprüfung, Passwortänderung und Sitzungen einheitlich abwickeln
+C: Eine Firewall
+D: Ein Dateisystem
+L: B
+E: PAM = Pluggable Authentication Modules. Konfiguration unter /etc/pam.d/.
+
+F: Welcher PAM-Modultyp prüft die Identität, z. B. das Passwort?
+A: auth
+B: account
+C: password
+D: session
+L: A
+E: account = darf das Konto sich anmelden (abgelaufen, gesperrt?), password = Passwortänderung und -regeln, session = Aufgaben beim An- und Abmelden.
+
+F: Was ist der Unterschied zwischen Authentifizierung und Autorisierung?
+A: Es gibt keinen
+B: Authentifizierung: Wer bist du? – Autorisierung: Was darfst du?
+C: Autorisierung prüft das Passwort
+D: Authentifizierung vergibt Dateirechte
+L: B
+
+F: Welche Einstellungen in /etc/security/pwquality.conf erzwingen mindestens 12 Zeichen aus mindestens 3 Zeichenklassen?
+A: minlen = 12 und minclass = 3
+B: length = 12 und classes = 3
+C: maxlen = 12 und minclass = 3
+D: minlen = 3 und minclass = 12
+L: A
+
+F: Mit welchem Befehl zwingst du den Benutzer tbecker, sein Passwort bei der nächsten Anmeldung zu ändern?
+L: sudo chage -d 0 tbecker
+L: chage -d 0 tbecker
+L: sudo passwd -e tbecker
+L: passwd -e tbecker
+L: sudo passwd --expire tbecker
+E: Achtung, der Befehl heißt chage (change age), nicht change. chage -l tbecker zeigt die aktuellen Werte.
+
+F: Was ist der Unterschied zwischen /etc/login.defs und chage?
+A: login.defs enthält Standardwerte für neue Konten, chage ändert die Werte eines bestehenden Kontos
+B: chage gilt für alle Benutzer, login.defs nur für root
+C: Beide machen genau dasselbe
+D: login.defs speichert die Passwörter
+L: A
+
+F: Welche Werte in /etc/security/faillock.conf sperren ein Konto nach 5 Fehlversuchen für 15 Minuten?
+A: deny = 5 und unlock_time = 900
+B: deny = 15 und unlock_time = 5
+C: maxretry = 5 und bantime = 15
+D: deny = 5 und unlock_time = 15
+L: A
+E: unlock_time wird in Sekunden angegeben: 15 × 60 = 900.
+
+F: Wie gibst du ein durch pam_faillock gesperrtes Konto tbecker wieder frei?
+L: sudo faillock --user tbecker --reset
+L: faillock --user tbecker --reset
+E: Ohne --reset zeigt faillock --user tbecker die protokollierten Fehlversuche.
+
+F: Warum muss man bei Änderungen an PAM besonders vorsichtig sein?
+A: PAM-Änderungen werden erst nach einem Jahr wirksam
+B: Ein Fehler kann dazu führen, dass sich niemand mehr anmelden kann – auch root nicht
+C: PAM löscht bei Fehlern alle Benutzer
+D: PAM ist nur für Windows
+L: B
+E: Vorher sichern, in einer Testumgebung prüfen und eine Root-Sitzung offen lassen, bis der Test in einem zweiten Fenster geklappt hat.
+
+F: Was ist der Unterschied zwischen DAC und MAC?
+A: DAC: Besitzer bestimmt die Rechte (rwx); MAC: zentrale Richtlinien, die auch root nicht einfach umgehen kann
+B: MAC ist nur für Apple-Rechner
+C: DAC ist eine Firewall
+D: Es gibt keinen Unterschied
+L: A
+E: AppArmor und SELinux sind MAC-Systeme.
+
+F: Im Log steht apparmor="DENIED" für mysqld beim Zugriff auf /srv/mysql. Was ist der richtige Weg?
+A: AppArmor komplett abschalten
+B: Das AppArmor-Profil um den neuen Pfad erweitern und neu laden
+C: chmod 777 /srv/mysql
+D: Den Server neu installieren
+L: B
+E: Z. B. in /etc/apparmor.d/local/usr.sbin.mysqld ergänzen, dann sudo apparmor_parser -r /etc/apparmor.d/usr.sbin.mysqld. Ergänzungen in local/ überstehen Paket-Updates.
+
+F: Wie unterscheiden sich AppArmor und SELinux grundsätzlich?
+A: AppArmor arbeitet mit Pfaden, SELinux mit Labels (Sicherheitskontexten)
+B: SELinux arbeitet mit Pfaden, AppArmor mit Labels
+C: Beide sind Firewalls
+D: AppArmor gibt es nur unter Red Hat
+L: A
+E: Ubuntu nutzt standardmäßig AppArmor, RHEL/Fedora SELinux.
+
+F: Mit welchem Befehl zeigst du alle lauschenden TCP- und UDP-Ports samt Programm an?
+L: sudo ss -tulpn
+L: ss -tulpn
+L: sudo ss -tulnp
+L: ss -tulnp
+L: sudo ss -lntup
+E: t = TCP, u = UDP, l = lauschend, p = Prozess, n = numerisch.
+
+F: Warum sind nicht benötigte Dienste ein Sicherheitsrisiko?
+A: Sie verbrauchen nur Speicher, sonst nichts
+B: Jeder lauschende Dienst ist ein mögliches Einfallstor, z. B. bei Sicherheitslücken
+C: Sie verhindern Updates
+D: Das sind sie nicht
+L: B
+E: Nicht benötigte Dienste stoppen, deaktivieren und deinstallieren: systemctl disable --now … und apt purge ….
+
+F: Was bedeutet "Least Privilege"?
+A: Jeder bekommt Administratorrechte
+B: Benutzer und Programme bekommen nur die Rechte, die sie wirklich brauchen
+C: Root darf nichts
+D: Passwörter werden abgeschafft
+L: B
+E: Defense in Depth: mehrere unabhängige Schutzschichten hintereinander (Firewall, MAC, starke Anmeldung, Updates).
+
+F: Im SSH-Log steht "Invalid user admin from 10.0.5.23". Was bedeutet das?
+A: Das Passwort von admin war falsch
+B: Es wurde versucht, sich mit einem Benutzernamen anzumelden, den es auf dem Server nicht gibt
+C: admin wurde gesperrt
+D: Der SSH-Dienst ist ausgefallen
+L: B
+E: Viele Versuche mit Standardnamen wie admin in kurzer Zeit von einer IP deuten auf einen automatisierten Angriff hin.
+
+F: Was ist der Unterschied zwischen pam_faillock und fail2ban?
+A: Kein Unterschied
+B: pam_faillock sperrt das Benutzerkonto, fail2ban sperrt die angreifende IP-Adresse über die Firewall
+C: fail2ban sperrt Konten, pam_faillock IP-Adressen
+D: Beide sind Virenscanner
+L: B
+
+F: Wie heißt in /etc/fail2ban/jail.local die Option, mit der z. B. der Admin-PC nie gesperrt wird?
+A: whitelist
+B: ignoreip
+C: allowip
+D: trusted
+L: B
+E: Weitere wichtige Optionen: enabled = true, maxretry, findtime, bantime.
+
+F: Wie gibst du die von fail2ban im Jail sshd gesperrte IP 10.0.5.23 wieder frei?
+L: sudo fail2ban-client set sshd unbanip 10.0.5.23
+L: fail2ban-client set sshd unbanip 10.0.5.23
+E: Den Status zeigt sudo fail2ban-client status sshd.
+
+F: Was ist der Unterschied zwischen DROP und REJECT bei einer Firewall?
+A: DROP verwirft still (Absender läuft in einen Timeout), REJECT lehnt ab und schickt eine Fehlermeldung zurück
+B: REJECT verwirft still, DROP schickt eine Meldung
+C: Beide lassen das Paket durch
+D: DROP gilt nur für UDP
+L: A
+E: Bei UFW entspricht deny einem DROP und reject einem REJECT.
+
+F: Was musst du VOR "sudo ufw enable" auf einem Fernzugriff-Server unbedingt tun?
+A: Den Server neu starten
+B: Eine Regel anlegen, die SSH erlaubt
+C: Alle Benutzer löschen
+D: IPv6 abschalten
+L: B
+E: Sonst sperrst du dich aus. Danach mit sudo ufw status verbose kontrollieren.
+
+F: Wie erlaubst du mit UFW SSH nur aus dem Netz 10.40.20.0/24?
+L: sudo ufw allow from 10.40.20.0/24 to any port 22 proto tcp
+L: sudo ufw allow from 10.40.20.0/24 to any port 22
+L: ufw allow from 10.40.20.0/24 to any port 22 proto tcp
+
+F: Regel [1] "22/tcp DENY IN Anywhere" steht vor Regel [2] "22/tcp ALLOW IN 10.40.20.0/24". Was passiert bei einer SSH-Verbindung aus 10.40.20.0/24?
+A: Sie wird erlaubt, weil die spezifischere Regel gewinnt
+B: Sie wird blockiert, weil die erste passende Regel gilt
+C: UFW meldet einen Fehler
+D: Beide Regeln heben sich auf
+L: B
+E: Lösung: sudo ufw status numbered, dann sudo ufw delete 1.
+
+F: Wie erzeugst du ein modernes SSH-Schlüsselpaar vom Typ Ed25519?
+L: ssh-keygen -t ed25519
+E: Den öffentlichen Schlüssel überträgst du mit ssh-copy-id benutzer@server. Er landet in ~/.ssh/authorized_keys.
+
+F: Wozu dient die Passphrase eines SSH-Schlüssels?
+A: Sie ersetzt den öffentlichen Schlüssel
+B: Sie verschlüsselt den privaten Schlüssel, damit er bei Diebstahl nicht direkt nutzbar ist
+C: Sie wird an den Server gesendet
+D: Sie ist das Root-Passwort
+L: B
+E: Der private Schlüssel bleibt immer geheim auf dem eigenen Rechner, der öffentliche darf verteilt werden.
+
+F: Welche Zeile in sshd_config verbietet die Passwort-Anmeldung?
+L: PasswordAuthentication no
+
+F: Mit welchem Befehl prüfst du die Syntax der SSH-Serverkonfiguration, bevor du den Dienst neu startest?
+L: sudo sshd -t
+L: sshd -t
+L: sudo /usr/sbin/sshd -t
+
+F: "Permission denied (publickey)" – was ist eine typische Ursache?
+A: Der SSH-Dienst läuft nicht
+B: Der öffentliche Schlüssel fehlt in authorized_keys oder ~/.ssh bzw. authorized_keys haben zu offene Rechte
+C: Die Firewall verwirft Pakete
+D: Der Hostname ist falsch geschrieben
+L: B
+E: Richtige Rechte: ~/.ssh 700, authorized_keys 600.
+
+F: Nach einer gewollten Neuinstallation des Servers 10.40.10.21 meldet SSH "Host key verification failed". Mit welchem Befehl entfernst du den alten Schlüssel aus known_hosts?
+L: ssh-keygen -R 10.40.10.21
+E: Der Eintrag wird aus ~/.ssh/known_hosts gelöscht. Ungeprüft weitermachen wäre gefährlich – es könnte ein Man-in-the-Middle-Angriff sein.

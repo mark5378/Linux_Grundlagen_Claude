@@ -61,3 +61,42 @@ E: Für Verzeichnisse mit Inhalt brauchst du rm -r – mit Vorsicht!
 F: Welcher Befehl zeigt dir, um welche Art von Datei es sich handelt (z. B. Bild, Text, Programm)?
 L: file
 E: file schaut in den Inhalt, nicht nur auf die Endung. Beispiel: file foto.jpg
+
+F: Wie erstellst du einen symbolischen Link link.txt, der auf ziel.txt zeigt?
+L: ln -s ziel.txt link.txt
+E: Ohne -s entsteht ein Hardlink: ein zweiter Name für dieselbe Inode.
+
+F: Was passiert mit einem Hardlink, wenn der ursprüngliche Dateiname gelöscht wird?
+A: Er wird ebenfalls gelöscht
+B: Er funktioniert weiter, die Daten bleiben erhalten
+C: Er zeigt ins Leere
+D: Er wird zu einem Verzeichnis
+L: B
+E: Ein symbolischer Link dagegen wäre danach "kaputt", weil er nur den Pfad speichert.
+
+F: Was gilt für Hardlinks?
+A: Sie können auf Verzeichnisse und über Dateisystemgrenzen hinweg zeigen
+B: Sie funktionieren nur innerhalb desselben Dateisystems und nicht für Verzeichnisse
+C: Sie haben eine eigene Inode-Nummer
+D: Sie werden mit ln -s angelegt
+L: B
+E: Gleiche Inode-Nummer erkennst du mit ls -li.
+
+F: Welches Muster trifft genau die Dateien portal_20261001.log bis portal_20261031.log, aber nicht portal_20260930.log?
+A: portal_*.log
+B: portal_202610*.log
+C: portal_2026*.log
+D: portal_?.log
+L: B
+
+F: Wie löschst du alle .tmp-Dateien und lässt dir jede einzelne Löschung bestätigen?
+L: rm -i *.tmp
+E: Tipp: Vorher mit ls *.tmp oder echo *.tmp prüfen, was das Muster trifft.
+
+F: Wie verlässt du den Editor vi bzw. vim, ohne die Änderungen zu speichern?
+L: :q!
+E: :wq speichert und beendet. In nano: Strg+X und die Frage nach dem Speichern mit N beantworten.
+
+F: Wie zeigst du Größe, Rechte (auch oktal), Besitzer und Zeitstempel einer Datei ausführlich an?
+L: stat
+E: Beispiel: stat datei.txt – oder gezielt stat -c '%a %U %s' datei.txt.

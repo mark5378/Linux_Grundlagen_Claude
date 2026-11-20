@@ -1,0 +1,1 @@
+Beispiel /26: 6 Hostbits → Blockgröße 64 → Blöcke 0, 64, 128, 192. Adresse .70 liegt im Block 64–127 → Netz .64, Broadcast .127, Hosts .65–.126, also 62 Hosts.

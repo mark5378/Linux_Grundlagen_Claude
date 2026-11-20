@@ -1,0 +1,1 @@
+ln backup/notizen.txt backup/notizen_hard.txt – ln -s backup/notizen.txt notizen_link.txt – kaputte Links findest du mit: find . -xtype l

@@ -61,3 +61,77 @@ C: Den angemeldeten Benutzer
 D: Die Laufzeit seit dem Start
 L: B
 E: uname -a zeigt alle Infos. Die Laufzeit zeigt uptime.
+
+F: Was ist die PPID eines Prozesses?
+A: Die Priorität
+B: Die Prozess-ID des Elternprozesses, der ihn gestartet hat
+C: Die Anzahl der Threads
+D: Die Benutzer-ID
+L: B
+E: Den Prozessbaum zeigen ps -ef --forest oder pstree.
+
+F: Was bedeutet der Prozesszustand Z?
+A: Der Prozess läuft gerade
+B: Zombie: Prozess ist beendet, der Elternprozess hat den Exit-Status aber noch nicht abgeholt
+C: Der Prozess schläft
+D: Der Prozess ist pausiert
+L: B
+E: R = läuft/lauffähig, S = schläft (wartet), D = wartet auf Ein-/Ausgabe, T = gestoppt.
+
+F: Ein System mit 2 CPU-Kernen hat eine Load Average von 3.4. Wie ist das zu bewerten?
+A: Unauffällig
+B: Überlastet – mehr Prozesse wollen rechnen, als Kerne vorhanden sind
+C: Der Arbeitsspeicher ist voll
+D: Die Festplatte ist voll
+L: B
+E: Faustregel: Load dauerhaft über der Anzahl der Kerne (nproc) = Engpass.
+
+F: Wie startest du ./import.sh mit der niedrigsten Priorität?
+L: nice -n 19 ./import.sh
+L: nice -19 ./import.sh
+E: Nice-Werte reichen von -20 (höchste Priorität) bis 19 (niedrigste). Laufende Prozesse änderst du mit renice.
+
+F: Wie setzt du den Nice-Wert des laufenden Prozesses 4711 auf 10?
+L: sudo renice -n 10 -p 4711
+L: renice -n 10 -p 4711
+L: sudo renice 10 -p 4711
+L: renice 10 -p 4711
+L: sudo renice -n 10 4711
+L: renice -n 10 4711
+
+F: Wie beendest du den Hintergrundjob Nummer 1 der aktuellen Shell?
+L: kill %1
+
+F: Wie findest du die PID eines Prozesses, dessen Befehlszeile "import_test" enthält, samt vollständigem Befehl?
+L: pgrep -af import_test
+L: pgrep -fa import_test
+L: pgrep -a -f import_test
+L: pgrep -f -a import_test
+
+F: Eine riesige Logdatei wird noch von einem laufenden Prozess beschrieben. Was ist die richtige Reihenfolge?
+A: Datei löschen, Prozess weiterlaufen lassen
+B: Erst den Prozess beenden, dann die Datei leeren oder löschen
+C: Den Server ausschalten
+D: Die Datei nach /tmp verschieben
+L: B
+E: Gelöschte, aber noch geöffnete Dateien belegen weiter Platz. Leeren ohne Löschen: truncate -s 0 datei.log.
+
+F: Wie findest du die größten Verzeichnisse direkt unterhalb von /?
+L: sudo du -h --max-depth=1 / | sort -hr
+L: du -h --max-depth=1 / | sort -hr
+L: sudo du -h -d 1 / | sort -hr
+L: du -h -d 1 / | sort -hr
+L: sudo du -hd1 / | sort -hr
+
+F: Welcher Befehl zeigt die Eigenschaften der CPU (Modell, Kerne, Architektur)?
+L: lscpu
+L: cat /proc/cpuinfo
+
+F: Welcher Befehl zeigt die geladenen Kernelmodule?
+L: lsmod
+
+F: Wie liest du alle Systemmeldungen seit dem letzten Start?
+L: journalctl -b
+L: sudo journalctl -b
+L: dmesg
+L: sudo dmesg

@@ -1,0 +1,1 @@
+Zeige alle aktiven Zeilen: grep -vE "^[[:space:]]*(#|$)" sshd_config – suche nach doppelten Optionen und korrigiere die erste. Rechte: chmod 700 home_anna/.ssh

@@ -1,0 +1,187 @@
+# Bash-Skripte, Automatisierung & Datenträger
+
+F: Wie lautet eine übliche, portable Shebang-Zeile für Bash-Skripte?
+L: #!/usr/bin/env bash
+L: #!/bin/bash
+E: Die Shebang-Zeile muss die allererste Zeile sein.
+
+F: Warum startet man ein Skript im aktuellen Verzeichnis mit ./skript.sh?
+A: Weil der Punkt das Skript beschleunigt
+B: Weil das aktuelle Verzeichnis aus Sicherheitsgründen nicht im Suchpfad $PATH steht
+C: Weil Skripte sonst als root laufen
+D: Weil Bash sonst eine Datei löscht
+L: B
+
+F: Nach der Zeile bericht = "$HOME/test.txt" meldet die Shell "Befehl nicht gefunden". Warum?
+A: $HOME ist leer
+B: Bei Zuweisungen dürfen keine Leerzeichen um das = stehen
+C: Variablennamen müssen großgeschrieben sein
+D: Anführungszeichen sind verboten
+L: B
+E: Richtig: bericht="$HOME/test.txt". Mit Leerzeichen hält Bash "bericht" für einen Befehl.
+
+F: Welche Schleife eignet sich, um eine Liste von Diensten nacheinander abzuarbeiten?
+A: for
+B: until
+C: case
+D: if
+L: A
+E: while läuft, solange eine Bedingung wahr ist (z. B. Zeilen lesen), until läuft, bis sie wahr wird (z. B. warten, bis ein Dienst erreichbar ist).
+
+F: Wie gibst du alle Elemente des Arrays dienste einzeln und sicher in einer for-Schleife aus?
+L: for d in "${dienste[@]}"; do echo "$d"; done
+L: for d in "${dienste[@]}"; do echo $d; done
+E: "${array[@]}" mit Anführungszeichen erhält Elemente mit Leerzeichen.
+
+F: Wozu dient das Schlüsselwort local in einer Bash-Funktion?
+A: Die Variable gilt nur innerhalb der Funktion
+B: Die Variable wird in einer Datei gespeichert
+C: Die Funktion läuft nur lokal, nicht über SSH
+D: Die Variable wird schreibgeschützt
+L: A
+
+F: Was bewirkt set -euo pipefail?
+A: Das Skript läuft schneller
+B: Abbruch bei Fehlern (-e), bei nicht gesetzten Variablen (-u) und wenn ein Befehl in einer Pipeline fehlschlägt (pipefail)
+C: Es schaltet die Ausgabe ab
+D: Es aktiviert Farben
+L: B
+E: Vorsicht in Prüfskripten: Befehle, die absichtlich fehlschlagen dürfen, z. B. mit if oder || abfangen.
+
+F: Was bedeutet der Exit-Code 0?
+A: Fehler
+B: Erfolg
+C: Warnung
+D: Abbruch durch den Benutzer
+L: B
+E: Den Exit-Code des letzten Befehls enthält $?.
+
+F: Wie prüfst du nur die Syntax des Skripts test.sh, ohne es auszuführen?
+L: bash -n test.sh
+E: bash -x test.sh führt das Skript aus und zeigt jede Zeile vor der Ausführung (Fehlersuche). shellcheck test.sh findet typische Fehler statisch.
+
+F: Wie wechselst du nach /opt/skripte und startest ./bericht.sh NUR, wenn der Wechsel geklappt hat?
+L: cd /opt/skripte && ./bericht.sh
+E: && führt den zweiten Befehl nur bei Erfolg aus, || nur bei Misserfolg, ; immer.
+
+F: Warum funktionieren Aliase aus der .bashrc normalerweise nicht in Shell-Skripten?
+A: Skripte laufen in einer nicht-interaktiven Shell, die .bashrc nicht liest und Aliase standardmäßig nicht auswertet
+B: Aliase sind in Skripten verboten
+C: Skripte laufen immer als root
+D: Aliase funktionieren nur in zsh
+L: A
+E: In Skripten Funktionen statt Aliasen verwenden. Dauerhafte Aliase gehören in ~/.bashrc, aktivieren mit source ~/.bashrc.
+
+F: Was bedeutet die 3-2-1-Backup-Regel?
+A: 3 Kopien, 2 verschiedene Medien, 1 Kopie außer Haus
+B: 3 Backups pro Tag, 2 pro Nacht, 1 pro Woche
+C: 3 Festplatten im RAID, 2 Server, 1 Cloud
+D: 3 Tage aufbewahren, 2 Mal prüfen, 1 Mal löschen
+L: A
+
+F: Wozu nutzt man flock in einem Backup-Skript?
+A: Zum Verschlüsseln
+B: Damit nicht zwei Sicherungsläufe gleichzeitig laufen
+C: Zum Komprimieren
+D: Zum Einhängen der Backup-Platte
+L: B
+
+F: Warum prüft ein Backup-Skript vorher mit mountpoint -q /mnt/backup, ob die Platte eingehängt ist?
+A: Damit das Backup schneller läuft
+B: Sonst schreibt es unbemerkt ins leere Verzeichnis auf der Systemplatte und kann diese volllaufen lassen
+C: mountpoint formatiert die Platte
+D: Das ist nicht nötig
+L: B
+
+F: Wie prüfst du, ob das Archiv backup.tar.gz lesbar ist, ohne es zu entpacken?
+L: tar -tzf backup.tar.gz
+L: tar tzf backup.tar.gz
+L: tar -tf backup.tar.gz
+E: Eine echte Prüfung ist erst die Wiederherstellung in ein separates Testverzeichnis.
+
+F: Wie zeigst du sicher an, welche Dateien in /mnt/backup/daten älter als 14 Tage sind, BEVOR du sie löschst?
+L: find /mnt/backup/daten -name "*.tar.gz" -mtime +14
+L: find /mnt/backup/daten -name '*.tar.gz' -mtime +14
+L: find /mnt/backup/daten -type f -name "*.tar.gz" -mtime +14
+L: find /mnt/backup/daten -type f -name '*.tar.gz' -mtime +14
+L: find /mnt/backup/daten -mtime +14
+E: Erst ohne -delete testen, dann -delete anhängen.
+
+F: Welcher Cron-Zeitplan bedeutet "täglich um 02:30 Uhr"?
+A: 2 30 * * *
+B: 30 2 * * *
+C: * * 2 30 *
+D: 30 2 1 * *
+L: B
+E: Reihenfolge: Minute, Stunde, Tag des Monats, Monat, Wochentag.
+
+F: Welcher Cron-Zeitplan bedeutet "alle 15 Minuten"?
+L: */15 * * * *
+L: 0,15,30,45 * * * *
+
+F: Was enthält eine Zeile in /etc/cron.d/ zusätzlich zur persönlichen crontab?
+A: Ein Passwort
+B: Den Benutzernamen, unter dem der Befehl läuft
+C: Die Prozess-ID
+D: Den Rechnernamen
+L: B
+
+F: Ein Cronjob meldet "/bin/sh: 1: backup_daten.sh: not found". Was ist die wahrscheinlichste Ursache?
+A: Das Skript ist zu groß
+B: Cron hat einen sehr kurzen PATH – das Skript muss mit absolutem Pfad aufgerufen werden
+C: Cron kann keine Skripte ausführen
+D: Das Skript hat einen Syntaxfehler
+L: B
+E: Außerdem prüfen: ausführbar (chmod +x) und korrekte Shebang-Zeile.
+
+F: Was ist ein Vorteil eines systemd-Timers gegenüber cron?
+A: Er braucht keine Konfiguration
+B: Verpasste Läufe können nachgeholt werden (Persistent=true) und die Ausgaben landen im Journal
+C: Er läuft nur unter Windows
+D: Er ist älter und deshalb stabiler
+L: B
+E: Übersicht aller Timer: systemctl list-timers.
+
+F: Was ist der Unterschied zwischen einem Blockgerät und einem Zeichengerät?
+A: Blockgeräte (z. B. Festplatten) arbeiten mit Datenblöcken und wahlfreiem Zugriff, Zeichengeräte (z. B. Terminals) mit einem Zeichenstrom
+B: Blockgeräte sind immer virtuell
+C: Zeichengeräte speichern Dateien
+D: Es gibt keinen Unterschied
+L: A
+E: In ls -l erkennbar am ersten Zeichen: b oder c.
+
+F: Welcher Befehl zeigt alle Datenträger und Partitionen als Baum mit Größe und Einhängepunkt?
+L: lsblk
+E: blkid zeigt UUIDs und Dateisystemtypen, fdisk -l die Partitionstabellen, df -hT belegten Platz und Typ.
+
+F: Welche Aussage über GPT im Vergleich zu MBR stimmt?
+A: GPT erlaubt nur 4 primäre Partitionen
+B: GPT unterstützt Datenträger über 2 TiB, viele Partitionen und speichert eine Sicherungskopie der Partitionstabelle
+C: GPT funktioniert nicht mit UEFI
+D: GPT ist älter als MBR
+L: B
+
+F: Warum sollte man in /etc/fstab UUID=... statt /dev/sdb1 verwenden?
+A: UUIDs sind kürzer
+B: Gerätenamen wie /dev/sdb können sich beim Start ändern, die UUID bleibt gleich
+C: /dev/sdb1 ist nur für USB-Sticks erlaubt
+D: UUIDs verschlüsseln den Datenträger
+L: B
+
+F: Welche fstab-Option sorgt dafür, dass der Server auch ohne die Backup-Platte startet?
+L: nofail
+E: Beispiel: UUID=... /mnt/backup ext4 defaults,nofail 0 2. Vor dem Neustart mit sudo findmnt --verify und sudo mount -a testen.
+
+F: Mit welchem Befehl kontrollierst du, ob und wie viel Swap aktiv ist?
+L: swapon --show
+L: free -h
+L: swapon -s
+E: Swap ist Auslagerungsspeicher auf dem Datenträger, wenn der Arbeitsspeicher knapp wird.
+
+F: Ein KI-Assistent schlägt einen Befehl zum Formatieren einer Platte vor. Was tust du zuerst?
+A: Sofort ausführen, die KI kennt sich aus
+B: Gerät mit lsblk/blkid eindeutig prüfen, den Befehl verstehen und mit Dokumentation (man) abgleichen
+C: Den Befehl als root in einer Schleife ausführen
+D: Die KI nach dem Root-Passwort fragen
+L: B
+E: Die Verantwortung bleibt beim Administrator. Keine Passwörter, Schlüssel oder personenbezogenen Daten an die KI geben.

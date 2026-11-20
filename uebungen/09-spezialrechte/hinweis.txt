@@ -1,0 +1,1 @@
+mkdir -p ablage/team ablage/austausch, dann chmod 750 ablage, chmod 2770 ablage/team usw. – drwxrwxrwt ist das typische Recht von /tmp.
