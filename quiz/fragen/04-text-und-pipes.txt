@@ -1,0 +1,70 @@
+# Textverarbeitung, Umleitungen & Pipes
+
+F: Wie suchst du in der Datei log.txt nach allen Zeilen, die "ERROR" enthalten?
+L: grep ERROR log.txt
+L: grep "ERROR" log.txt
+L: grep 'ERROR' log.txt
+E: grep -i ignoriert Groß-/Kleinschreibung, -v kehrt die Suche um, -r sucht rekursiv.
+
+F: Was macht das Zeichen ">" in "ls > liste.txt"?
+A: Hängt die Ausgabe an liste.txt an
+B: Schreibt die Ausgabe in liste.txt und überschreibt den alten Inhalt
+C: Liest liste.txt als Eingabe
+D: Vergleicht ls mit liste.txt
+L: B
+E: ">" überschreibt, ">>" hängt an.
+
+F: Wie hängst du die Ausgabe von "date" an die Datei protokoll.txt an, ohne sie zu überschreiben?
+L: date >> protokoll.txt
+E: Doppelte spitze Klammer = anhängen.
+
+F: Was macht die Pipe "|"?
+A: Sie leitet die Ausgabe eines Befehls als Eingabe an den nächsten weiter
+B: Sie führt zwei Befehle gleichzeitig unabhängig aus
+C: Sie speichert die Ausgabe in einer Datei
+D: Sie trennt Kommentare vom Befehl
+L: A
+E: Beispiel: ls | wc -l zählt die Einträge im Verzeichnis.
+
+F: Wie zählst du die Zeilen der Datei namen.txt?
+L: wc -l namen.txt
+L: wc -l < namen.txt
+L: cat namen.txt | wc -l
+E: wc zählt Zeilen (-l), Wörter (-w) und Zeichen (-c).
+
+F: Warum steht vor "uniq" fast immer "sort"?
+A: uniq funktioniert nur mit Zahlen
+B: uniq entfernt nur direkt aufeinanderfolgende doppelte Zeilen
+C: sort ist für uniq Pflicht, sonst gibt es einen Fehler
+D: Das ist nur eine Stilfrage
+L: B
+E: Erst sortieren, damit Duplikate nebeneinander stehen: sort datei | uniq (oder sort -u datei).
+
+F: Wohin leitet "2>" um?
+A: Die Standardausgabe
+B: Die Standardeingabe
+C: Die Fehlerausgabe (stderr)
+D: In die zweite Datei
+L: C
+E: Kanal 0 = stdin, 1 = stdout, 2 = stderr. "2>/dev/null" verwirft Fehlermeldungen.
+
+F: Mit welchem Befehl schneidest du die erste Spalte aus einer durch Doppelpunkte getrennten Datei wie /etc/passwd aus?
+L: cut -d: -f1 /etc/passwd
+L: cut -d ':' -f1 /etc/passwd
+L: cut -d: -f 1 /etc/passwd
+L: cut -f1 -d: /etc/passwd
+E: -d legt das Trennzeichen fest, -f die Feldnummer.
+
+F: Welcher Befehl gibt eine Ausgabe gleichzeitig auf dem Bildschirm aus UND schreibt sie in eine Datei?
+A: tee
+B: cat
+C: echo
+D: split
+L: A
+E: Beispiel: ls | tee liste.txt
+
+F: Wie gibst du den Text "Hallo Welt" auf dem Bildschirm aus?
+L: echo Hallo Welt
+L: echo "Hallo Welt"
+L: echo 'Hallo Welt'
+E: echo schreibt seine Argumente auf die Standardausgabe.

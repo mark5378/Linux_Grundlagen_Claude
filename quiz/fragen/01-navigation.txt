@@ -1,0 +1,65 @@
+# Einführung & Navigation im Dateisystem
+# Format: siehe CONTRIBUTING.md
+
+F: Mit welchem Befehl zeigst du das aktuelle Arbeitsverzeichnis an?
+L: pwd
+E: pwd steht für "print working directory".
+
+F: Was bewirkt "cd" ohne Argument?
+A: Nichts, es erscheint eine Fehlermeldung
+B: Wechsel ins Wurzelverzeichnis /
+C: Wechsel in dein Home-Verzeichnis
+D: Wechsel ins übergeordnete Verzeichnis
+L: C
+E: Ohne Argument springt cd nach $HOME – genau wie "cd ~".
+
+F: Welcher Befehl wechselt in das übergeordnete Verzeichnis?
+L: cd ..
+E: ".." ist immer das Elternverzeichnis, "." das aktuelle.
+
+F: Welcher Pfad ist ein absoluter Pfad?
+A: Dokumente/brief.txt
+B: ./brief.txt
+C: /home/mark/brief.txt
+D: ../brief.txt
+L: C
+E: Absolute Pfade beginnen immer mit "/", dem Wurzelverzeichnis.
+
+F: Wie listest du ALLE Dateien inklusive versteckter Dateien in Langform auf?
+L: ls -la
+L: ls -al
+L: ls -l -a
+L: ls -a -l
+E: -l zeigt Details (Rechte, Größe, Datum), -a auch Dateien, die mit "." beginnen.
+
+F: Woran erkennt man unter Linux eine versteckte Datei?
+A: Sie hat die Endung .hidden
+B: Ihr Name beginnt mit einem Punkt
+C: Sie gehört dem Benutzer root
+D: Sie hat keine Leserechte
+L: B
+E: Dateien wie .bashrc werden von ls nur mit -a angezeigt.
+
+F: Wie öffnest du die Handbuchseite (Manual) zum Befehl ls?
+L: man ls
+E: Mit q verlässt du die Manpage, mit /suchwort suchst du darin.
+
+F: Was macht die Tab-Taste in der Shell?
+A: Sie rückt den Text ein
+B: Sie vervollständigt Befehle und Pfade
+C: Sie bricht den laufenden Befehl ab
+D: Sie wechselt zwischen offenen Terminals
+L: B
+E: Zweimal Tab zeigt alle möglichen Vervollständigungen an.
+
+F: In welchem Verzeichnis liegen typischerweise systemweite Konfigurationsdateien?
+A: /etc
+B: /bin
+C: /tmp
+D: /home
+L: A
+E: /etc enthält Konfiguration, /bin Programme, /tmp temporäre Dateien, /home die Benutzerverzeichnisse.
+
+F: Welcher Befehl wechselt direkt zurück in das vorherige Verzeichnis?
+L: cd -
+E: "cd -" springt zum zuletzt besuchten Verzeichnis zurück und gibt es aus.

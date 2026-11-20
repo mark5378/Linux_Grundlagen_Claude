@@ -1,0 +1,63 @@
+# Prozesse & Systeminformationen
+
+F: Welcher Befehl zeigt eine laufend aktualisierte Übersicht der Prozesse und der CPU-Last?
+A: ps
+B: top
+C: ls
+D: jobs
+L: B
+E: top (oder das komfortablere htop) aktualisiert sich ständig. Beenden mit q.
+
+F: Wie listest du alle Prozesse aller Benutzer auf (BSD-Schreibweise)?
+L: ps aux
+L: ps -ef
+E: ps aux und ps -ef sind beide gebräuchlich.
+
+F: Welches Signal sendet "kill 1234" standardmäßig?
+A: SIGKILL (9)
+B: SIGTERM (15)
+C: SIGSTOP (19)
+D: SIGHUP (1)
+L: B
+E: SIGTERM bittet das Programm, sich sauber zu beenden. Erst wenn das nicht klappt: kill -9.
+
+F: Was passiert, wenn du in der Shell Strg+C drückst?
+A: Der Text wird kopiert
+B: Der laufende Vordergrundprozess wird abgebrochen
+C: Die Shell wird geschlossen
+D: Der Prozess läuft im Hintergrund weiter
+L: B
+E: Strg+C sendet SIGINT. Strg+Z pausiert den Prozess stattdessen.
+
+F: Wie startest du "sleep 100" direkt im Hintergrund?
+L: sleep 100 &
+E: Das & am Ende startet den Befehl im Hintergrund. Mit jobs siehst du ihn, mit fg holst du ihn zurück.
+
+F: Mit welchem Befehl prüfst du, wie viel Platz auf den Datenträgern frei ist (menschenlesbar)?
+L: df -h
+E: df = disk free. -h zeigt Größen in K, M, G.
+
+F: Welcher Befehl zeigt, wie viel Platz ein Verzeichnis belegt?
+A: df
+B: du
+C: free
+D: size
+L: B
+E: du -sh verzeichnis zeigt die Gesamtgröße menschenlesbar.
+
+F: Wie zeigst du den Arbeitsspeicher-Verbrauch menschenlesbar an?
+L: free -h
+E: free zeigt RAM und Swap.
+
+F: Womit prüfst du den Status des Dienstes ssh auf einem System mit systemd?
+L: systemctl status ssh
+L: sudo systemctl status ssh
+E: Mit start, stop, restart, enable und disable steuerst du Dienste.
+
+F: Was zeigt "uname -r"?
+A: Den Rechnernamen
+B: Die Kernel-Version
+C: Den angemeldeten Benutzer
+D: Die Laufzeit seit dem Start
+L: B
+E: uname -a zeigt alle Infos. Die Laufzeit zeigt uptime.

@@ -1,0 +1,1 @@
+find daten -name "*.conf" > conf_liste.txt  –  tar -czf backup.tar.gz daten  –  tar -xzf backup.tar.gz -C wiederhergestellt

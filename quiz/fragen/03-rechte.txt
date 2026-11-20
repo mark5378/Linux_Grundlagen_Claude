@@ -1,0 +1,65 @@
+# Benutzer & Dateirechte
+
+F: Mit welchem Befehl findest du heraus, als welcher Benutzer du angemeldet bist?
+L: whoami
+E: id zeigt zusätzlich deine Benutzer-ID und alle Gruppen.
+
+F: Was bedeutet die Rechte-Angabe "-rwxr-x---"?
+A: Besitzer: alles, Gruppe: lesen+ausführen, Andere: nichts
+B: Alle dürfen alles
+C: Besitzer: lesen, Gruppe: schreiben, Andere: ausführen
+D: Es ist ein Verzeichnis mit vollen Rechten
+L: A
+E: Das erste Zeichen ist der Typ (- Datei, d Verzeichnis), danach je drei Zeichen für Besitzer, Gruppe, Andere.
+
+F: Welche Oktalzahl entspricht rw-r--r--?
+A: 755
+B: 644
+C: 600
+D: 777
+L: B
+E: r=4, w=2, x=1. rw- = 6, r-- = 4, r-- = 4.
+
+F: Wie machst du die Datei skript.sh für ihren Besitzer ausführbar (symbolische Schreibweise)?
+L: chmod u+x skript.sh
+E: u=user/Besitzer, g=group, o=others, a=alle. + fügt hinzu, - entfernt.
+
+F: Welche Rechte hat eine Datei nach "chmod 600 geheim.txt"?
+A: Jeder darf lesen
+B: Nur der Besitzer darf lesen und schreiben
+C: Nur der Besitzer darf ausführen
+D: Niemand hat Rechte
+L: B
+E: 6 = rw- für den Besitzer, 0 = keine Rechte für Gruppe und Andere – typisch für private Schlüssel.
+
+F: Was bedeutet das Ausführrecht "x" bei einem VERZEICHNIS?
+A: Man darf Programme darin ausführen
+B: Man darf in das Verzeichnis wechseln (es betreten)
+C: Man darf es löschen
+D: Es hat bei Verzeichnissen keine Bedeutung
+L: B
+E: Ohne x kannst du nicht mit cd hinein und nicht auf Dateien darin zugreifen.
+
+F: Mit welchem Befehl führst du einen einzelnen Befehl mit Administratorrechten aus?
+L: sudo
+E: sudo fragt dein Passwort ab und protokolliert den Aufruf. Beispiel: sudo apt update
+
+F: Wie heißt der Administrator-Benutzer unter Linux?
+A: admin
+B: root
+C: system
+D: superuser
+L: B
+E: root hat die Benutzer-ID 0 und darf alles. Arbeite nicht dauerhaft als root.
+
+F: Mit welchem Befehl änderst du den Besitzer einer Datei?
+L: chown
+E: Beispiel: sudo chown mark:mark datei.txt setzt Besitzer und Gruppe.
+
+F: Was ist für ein Skript, das alle lesen und ausführen, aber nur der Besitzer ändern darf, die passende Oktalzahl?
+A: 777
+B: 700
+C: 755
+D: 644
+L: C
+E: 7 = rwx für den Besitzer, 5 = r-x für Gruppe und Andere.

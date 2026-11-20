@@ -1,0 +1,1 @@
+Mit "find . -name schatz.txt" findest du den Pfad. Danach: cp PFAD gefunden.txt

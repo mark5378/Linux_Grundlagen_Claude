@@ -1,0 +1,23 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ShellCheck
+        run: shellcheck -x -S warning quiz.sh uebung.sh
+
+      - name: Fragedateien prüfen
+        run: ./quiz.sh --pruefen
+
+      - name: Übungen selbst testen
+        run: ./uebung.sh selbsttest
+
+      - name: Quiz-Durchlauf (nicht interaktiv)
+        run: printf 'A\n%.0s' {1..20} | ./quiz.sh -n 5

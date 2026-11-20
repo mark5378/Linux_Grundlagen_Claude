@@ -1,0 +1,1 @@
+mkdir -p projekt/docs projekt/skripte – danach mv chaos/*.md projekt/docs/ usw. Zum Schluss rmdir chaos.

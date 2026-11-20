@@ -1,0 +1,2 @@
+# Skripte immer mit Unix-Zeilenenden – wichtig, wenn unter Windows geklont wird
+* text=auto eol=lf

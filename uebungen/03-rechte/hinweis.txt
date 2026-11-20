@@ -1,0 +1,1 @@
+Rechne in Oktal: r=4, w=2, x=1. rwx r-x --- ergibt 750.

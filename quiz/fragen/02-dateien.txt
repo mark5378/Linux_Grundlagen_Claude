@@ -1,0 +1,63 @@
+# Dateien & Verzeichnisse bearbeiten
+
+F: Wie legst du die Verzeichnisse projekt/src/main in einem Schritt an, auch wenn projekt noch nicht existiert?
+L: mkdir -p projekt/src/main
+E: -p (parents) legt fehlende Elternverzeichnisse automatisch mit an.
+
+F: Welcher Befehl legt eine leere Datei notizen.txt an (oder aktualisiert ihren Zeitstempel)?
+L: touch notizen.txt
+E: touch ändert den Zeitstempel und erzeugt die Datei, falls sie fehlt.
+
+F: Wie kopierst du das Verzeichnis fotos samt Inhalt nach backup?
+A: cp fotos backup
+B: cp -r fotos backup
+C: mv -r fotos backup
+D: copy fotos backup
+L: B
+E: Ohne -r (rekursiv) kopiert cp keine Verzeichnisse.
+
+F: Womit benennst du die Datei alt.txt in neu.txt um?
+L: mv alt.txt neu.txt
+E: Linux hat keinen eigenen Umbenennen-Befehl – mv verschiebt und benennt um.
+
+F: Was ist beim Befehl "rm" besonders zu beachten?
+A: Gelöschte Dateien landen im Papierkorb
+B: rm fragt immer vorher nach
+C: Gelöschte Dateien sind in der Regel endgültig weg
+D: rm kann nur leere Dateien löschen
+L: C
+E: Es gibt keinen Papierkorb. Mit rm -i lässt du dich vor jedem Löschen fragen.
+
+F: Was trifft das Muster *.txt?
+A: Nur die Datei mit dem Namen *.txt
+B: Alle Dateien, die auf .txt enden
+C: Alle Dateien, die mit txt beginnen
+D: Alle Textdateien in allen Unterverzeichnissen
+L: B
+E: * steht für beliebig viele Zeichen, ? für genau ein Zeichen. Die Shell expandiert das Muster vor dem Aufruf.
+
+F: Wie zeigst du die letzten 20 Zeilen der Datei log.txt an?
+L: tail -n 20 log.txt
+L: tail -20 log.txt
+L: tail -n20 log.txt
+E: head zeigt den Anfang, tail das Ende. tail -f verfolgt eine Datei live.
+
+F: Mit welchem Programm blätterst du bequem durch eine lange Datei?
+A: less
+B: cat
+C: echo
+D: touch
+L: A
+E: In less blätterst du mit Leertaste/Pfeiltasten, suchst mit / und beendest mit q.
+
+F: Was macht "rmdir leer"?
+A: Löscht das Verzeichnis leer samt Inhalt
+B: Löscht das Verzeichnis leer nur, wenn es leer ist
+C: Leert das Verzeichnis, lässt es aber bestehen
+D: Benennt das Verzeichnis um
+L: B
+E: Für Verzeichnisse mit Inhalt brauchst du rm -r – mit Vorsicht!
+
+F: Welcher Befehl zeigt dir, um welche Art von Datei es sich handelt (z. B. Bild, Text, Programm)?
+L: file
+E: file schaut in den Inhalt, nicht nur auf die Endung. Beispiel: file foto.jpg

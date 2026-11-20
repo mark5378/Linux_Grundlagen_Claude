@@ -1,0 +1,67 @@
+# Pakete, Netzwerk, Suchen & Archive
+
+F: Welcher Befehl aktualisiert unter Debian/Ubuntu die Paketlisten?
+L: sudo apt update
+L: apt update
+E: update lädt nur die Listen neu, upgrade installiert die Aktualisierungen.
+
+F: Wie installierst du das Paket htop unter Debian/Ubuntu?
+L: sudo apt install htop
+L: sudo apt-get install htop
+L: apt install htop
+E: Mit apt remove deinstallierst du es wieder.
+
+F: Welcher Befehl zeigt die IP-Adressen deiner Netzwerkschnittstellen an?
+A: ip a
+B: ping
+C: netip
+D: ls /net
+L: A
+E: ip a (kurz für ip address) ist der moderne Nachfolger von ifconfig.
+
+F: Wie prüfst du mit genau 4 Paketen, ob 1.1.1.1 erreichbar ist?
+L: ping -c 4 1.1.1.1
+L: ping -c4 1.1.1.1
+E: Ohne -c läuft ping unter Linux endlos – abbrechen mit Strg+C.
+
+F: Womit meldest du dich verschlüsselt als Benutzer pi auf dem Rechner 192.168.1.10 an?
+L: ssh pi@192.168.1.10
+E: ssh öffnet eine sichere Shell auf einem entfernten Rechner.
+
+F: Wie findest du im aktuellen Verzeichnis (rekursiv) alle Dateien mit der Endung .conf?
+L: find . -name "*.conf"
+L: find . -name '*.conf'
+L: find . -type f -name "*.conf"
+L: find . -type f -name '*.conf'
+E: Die Anführungszeichen verhindern, dass die Shell das * vorher selbst auflöst.
+
+F: Wie packst du das Verzeichnis daten in das komprimierte Archiv daten.tar.gz?
+L: tar -czf daten.tar.gz daten
+L: tar czf daten.tar.gz daten
+L: tar -czvf daten.tar.gz daten
+L: tar -zcf daten.tar.gz daten
+E: c = create, z = gzip, f = Dateiname, v = ausführliche Ausgabe.
+
+F: Was macht "tar -xzf archiv.tar.gz"?
+A: Erstellt ein Archiv
+B: Entpackt das Archiv
+C: Zeigt nur den Inhalt an
+D: Löscht das Archiv
+L: B
+E: x = extract. Zum Anzeigen ohne Entpacken nimmst du -t statt -x.
+
+F: Welches Werkzeug lädt eine Datei über HTTP herunter?
+A: ssh
+B: curl
+C: grep
+D: ip
+L: B
+E: curl -O URL speichert die Datei; wget URL funktioniert ähnlich.
+
+F: In welcher Datei werden unter Linux feste Zuordnungen von Hostnamen zu IP-Adressen eingetragen?
+A: /etc/hosts
+B: /etc/passwd
+C: /etc/fstab
+D: /etc/hostname
+L: A
+E: /etc/hosts wird meist vor DNS gefragt. /etc/fstab regelt das Einhängen von Datenträgern.
