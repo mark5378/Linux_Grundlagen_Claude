@@ -4,6 +4,8 @@ Lerne die Linux-Kommandozeile Schritt für Schritt – mit kurzen Lektionen, ein
 
 Komplett auf Deutsch, ohne Abhängigkeiten – du brauchst nur eine Bash.
 
+🌐 **Als Webseite:** https://mark5378.github.io/Linux_Grundlagen_Claude/ – Lektionen lesen und das Quiz direkt im Browser spielen.
+
 ```
 Frage 3/10  [03-rechte]
 Welche Oktalzahl entspricht rw-r--r--?
@@ -85,6 +87,10 @@ cd ~/linux-uebungen/01-schatzsuche
 ```
 
 Die Übungen laufen in einem eigenen Ordner (`~/linux-uebungen`), du kannst also nichts kaputt machen. Mit `UEBUNGS_HOME=/anderer/pfad` lässt sich der Ort ändern.
+
+## 🌐 Webseite
+
+Die Webseite wird bei jedem Push auf `main` automatisch aus den Lektionen, Fragen und Übungen gebaut (`web/build.py`) und über GitHub Pages veröffentlicht. Lokal ansehen: `python3 web/build.py` und dann `site/index.html` im Browser öffnen.
 
 ## 🤝 Mitmachen
 
